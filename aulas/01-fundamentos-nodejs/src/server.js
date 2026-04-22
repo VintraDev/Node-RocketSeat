@@ -18,15 +18,32 @@ import http from 'node:http';
 // GET - MÈTODO
 // /users - URL
 
+// Stateful - Stateless
+
+// JSON - Javascript Object Notation
+
+// Cabeçalhos (Requisição/Resposta) => Metadados
+
+const users = []
+
 const server = http.createServer((req, res) => {
 
     const { method, url } = req;
 
     if (method === 'GET' && url === '/users') {
-        return res.end('Listagem');
+        return res
+        .setHeader('Content-type', 'aplication/json')
+        .end(JSON.stringify(users));
     }
 
     if (method === 'POST' && url === '/users') {
+
+        users.push({
+            id: 1,
+            name: 'John Doe',
+            email: 'johndoe@example.com'
+        })
+
         return res.end('Criação de usuários')
     }
 
