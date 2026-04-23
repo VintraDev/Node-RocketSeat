@@ -24,6 +24,15 @@ import http from 'node:http';
 
 // Cabeçalhos (Requisição/Resposta) => Metadados
 
+
+// HTTP Status Code
+
+// 100 - 199 Respostas informadas
+// 200 - 299 Respostas bem-sucedidas
+// 300 - 399 Mensagens de redirecionamento
+// 400 - 499 Respostas de erro do cliente
+// 500 - 599 Resposas de erro do servidor
+
 const users = []
 
 const server = http.createServer((req, res) => {
@@ -42,12 +51,12 @@ const server = http.createServer((req, res) => {
             id: 1,
             name: 'John Doe',
             email: 'johndoe@example.com'
-        })
+        });
 
-        return res.end('Criação de usuários')
+        return res.writeHead(201).end();
     }
 
-    return res.end('Hello World!');
+    return res.writeHead(404).end();
 })
 
 server.listen(3333)
