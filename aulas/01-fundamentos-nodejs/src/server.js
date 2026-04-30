@@ -1,5 +1,6 @@
 import http from 'node:http';
 import { json } from './middlewares/json.js';
+import { Database } from './database.js';
 
 // HTTP
 // - Método HTTP
@@ -34,7 +35,7 @@ import { json } from './middlewares/json.js';
 // 400 - 499 Respostas de erro do cliente
 // 500 - 599 Resposas de erro do servidor
 
-const users = []
+const database = new Database
 
 const server = http.createServer(async (req, res) => {
 
@@ -43,20 +44,23 @@ const server = http.createServer(async (req, res) => {
     await json(req, res)
 
     if (method === 'GET' && url === '/users') {
-        return res
-            .setHeader('Content-type', 'aplication/json')
-            .end(JSON.stringify(users));
+
+        const users = database.select('users')
+
+        return res.end(JSON.stringify(users));
     }
 
     if (method === 'POST' && url === '/users') {
 
         const { name, email } = req.body
 
-        users.push({
+        const user = {
             id: 1,
             name,
             email
-        });
+        };
+
+        database.insert('users', user)
 
         return res.writeHead(201).end();
     }
